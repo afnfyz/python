@@ -22,14 +22,43 @@ if password == 'sword':
 else:
          print('Wrong password.')
 
-# Only prints one or none of the clauses.
-name = 'Zaynab'
-age = 3000
-if name == 'Zaynab':
-    print('Hi, Zaynab.')
+# If, Elif, Else
+# Only prints one of the clauses.
+name = 'Maryam'
+age = 13
+if name == 'Aisha':
+    print('Hi, Aisha.')
 elif age < 12:
     print('You are not Aisha, kiddo.')
 elif age > 2000:
     print('Unlike you, Aisha is not an undead, immortal vampire.')
 elif age > 100:
     print('You are not Aisha, grannie.')
+else:
+    print("Who are you?")
+
+# While Loop
+spam = 0
+if spam < 5:
+    print('Hello, world.')
+    spam = spam + 1
+
+spam = 0
+while spam < 10:
+    print('Hello, world.')
+    spam = spam + 1
+
+# Without break clause.
+name = ''
+while name != 'your name':
+       print('Please type your name.')
+       name = input()
+print('Thank you!')
+
+# With break clause.
+while True:
+    print("Please input your name: ")
+    name = input()
+    if name == 'your name':
+        break
+print ('Thanks!')
