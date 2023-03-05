@@ -62,3 +62,27 @@ while True:
     if name == 'your name':
         break
 print ('Thanks!')
+
+# With continue clause. When executed will start the loop from the beginning.
+while True:
+    print('Who are you?')
+    name = input()
+    if name != 'Ahmed':
+         continue
+    print('Hello, Ahmed. What is the password? (It is a fruit.)')
+    password = input()
+    if password == 'mango':
+         break
+    print('Access granted.')    
+
+while True:
+    print("What is your name?")
+    name = input()
+    if name != 'Dawud':
+     continue
+    print("Hello Dawud, please select a number: ")
+    num = int(input())
+    if num != int(5):
+     continue
+    print("Welcome Dawud!") 
+    break
