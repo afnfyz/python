@@ -86,3 +86,17 @@ while True:
      continue
     print("Welcome Dawud!") 
     break
+
+name = ''
+while not name:
+    print('Enter your name:')
+    name = input()
+print('How many guests will you have?')
+numOfGuests = int(input())
+if numOfGuests:
+     print('Be sure to have enough room for all your guests.')
+print('Done')
+
+statement="My name is "
+for i in range(5):
+    print(statement + 'Jimmy Five Times (' + str(i) + ')')
