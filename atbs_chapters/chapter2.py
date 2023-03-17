@@ -99,4 +99,30 @@ print('Done')
 
 statement="My name is "
 for i in range(5):
-    print(statement + 'Jimmy Five Times (' + str(i) + ')')
+    print(statement, 'Jimmy Five Times (' + str(i) + ')')
+
+total=0
+for num in range(15):
+    total = total + num
+print(total)
+
+i=0
+while i<4:
+    print('Jimmy', str(i))
+    i += 1
+
+# Range function and step argumants
+
+for a in range(12, 16): # some functions can be called with multiple arguments like range
+    print(a)
+
+for b in range(0, 10, 2): # here 2 is the third argument and it called the step argument
+    print(b)              # so this function will count from 0 to 10 by intervals of two
+
+for c in range(10, -1, -2): # here the step function is used to count backwards
+    print(c)
+
+colors = ["red" "blue", "purple"]
+for color in colors:
+  print(color)
+
