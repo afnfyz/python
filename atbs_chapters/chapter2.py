@@ -1,3 +1,13 @@
+import random, sys, os, math
+
+from random import * # If this format is used you don't have to call random prefix before function.
+for i in range (7):
+    print(randint(1,50))
+
+for i in range (5):
+    print(random.randint(1,10))
+
+
 # Comparison Operators
 
 42 == 42
@@ -126,3 +136,36 @@ colors = ["red" "blue", "purple"]
 for color in colors:
   print(color)
 
+
+import sys
+
+while True:
+    print("Type exit to exit")
+    user_input = input()
+    if user_input == "exit":
+        sys.exit()
+    else:
+        print(f"You typed,'{user_input}'.") 
+        print("Please type exit to exit.")
+
+
+import random
+
+print("I am guessing a number between 1 and 25.")
+
+num=random.randint(1,20)
+
+for i in range(1,10):
+    print("Take a guess.")
+    guess=int(input())
+    if guess < num:
+        print("Your guess is too low.")
+    elif guess > num:
+        print("Your guess is too high.")
+    else:
+        break
+
+if guess == num:
+    print("That's correct, you guessed my number in", str(i), "guesses!")
+else:
+    print("Nope, the number I had in mind was", str(num))
