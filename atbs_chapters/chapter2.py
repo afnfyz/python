@@ -150,22 +150,24 @@ while True:
 
 
 import random
+import sys
 
 print("I am guessing a number between 1 and 25.")
 
 num=random.randint(1,20)
 
-for i in range(1,10):
+for i in range(1,11):
     print("Take a guess.")
     guess=int(input())
+    if i == 10:
+        print("The correct number is " + str(num))
+        sys.exit()
     if guess < num:
         print("Your guess is too low.")
     elif guess > num:
         print("Your guess is too high.")
-    else:
-        break
+    elif guess == num:
+        print("That is correct, you guessed it in", str(i), "guesses!")
+        sys.exit()
+        
 
-if guess == num:
-    print("That's correct, you guessed my number in", str(i), "guesses!")
-else:
-    print("Nope, the number I had in mind was", str(num))
