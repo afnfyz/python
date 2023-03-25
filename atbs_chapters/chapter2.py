@@ -192,6 +192,7 @@ for i in range(1,11):
         print("That is correct, you guessed it in", str(i), "guesses!")
         sys.exit()
 
+########################################################################################
 
 import random, sys
 
@@ -212,4 +213,42 @@ while True: # The main game loop.
             break # breaks out of the player input loop
     print("Type either r, p, s or q")
 
+    if move == 'r':
+        print('ROCK versus...', end='')
+    elif move == 'p':
+        print('PAPER versus...', end='')
+    elif move == 's':
+        print('SCISSORS versus...', end='')
+        
+    randomnumber = random.randint(1,3)
+    if randomnumber == 1:
+        computerchoice = "r"
+        print("ROCK")
+    elif randomnumber == 2:
+        computerchoice = "p"
+        print("PAPER")
+    elif randomnumber == 3:
+        computerchoice = "s"
+        print("SCISSORS")
 
+    if move == computerchoice:
+        print("It's tie!")
+        ties = ties + 1
+    elif move == "r" and computerchoice == "p":
+        print("Computer wins!")
+        losses = losses + 1 
+    elif move == "r" and computerchoice == "s":
+        print("You win!")
+        wins = wins + 1
+    elif move == "p" and computerchoice == "r":
+        print("You win!")
+        wins = wins + 1
+    elif move == "p" and computerchoice == "s":
+        print("Computer wins!")
+        losses = losses + 1
+    elif move == "s" and computerchoice == "r":
+        print("Computer wins!")
+        losses = losses + 1
+    elif move == "s" and computerchoice == "p":
+        print("You win!")
+        wins = wins + 1
