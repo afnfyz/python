@@ -150,9 +150,31 @@ while True:
 
 
 import random
-import sys
 
 print("I am guessing a number between 1 and 25.")
+
+num=random.randint(1,20)
+
+for i in range(1,10):
+    print("Take a guess.")
+    guess=int(input())
+    if guess < num:
+        print("Your guess is too low.")
+    elif guess > num:
+        print("Your guess is too high.")
+    else:
+        break
+
+if guess == num:
+    print("That's correct, you guessed my number in", str(i), "guesses!")
+else:
+    print("Nope, the number I had in mind was", str(num))
+
+
+import random
+import sys
+
+print("I am guessing a number between 1 and 20.")
 
 num=random.randint(1,20)
 
@@ -169,5 +191,25 @@ for i in range(1,11):
     elif guess == num:
         print("That is correct, you guessed it in", str(i), "guesses!")
         sys.exit()
-        
+
+
+import random, sys
+
+wins = 0
+losses = 0
+ties = 0
+
+print("ROCK, PAPER, SCISSORS")
+
+while True: # The main game loop.
+    print('{} Wins, {} Losses, {} Ties' .format(wins, losses, ties))
+    while True: # The player input loop.
+        print("Enter your move: (r)ock (p)aper (s)cissors or (q)uit")
+        move = input()
+        if move == "q":
+            sys.exit() # exits the program
+        if move == "r" or move == "p" or move == "s":
+            break # breaks out of the player input loop
+    print("Type either r, p, s or q")
+
 
