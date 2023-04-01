@@ -38,6 +38,7 @@ else:
     if 'speed' in data.json()['wind']:
         wind_speed = round(data.json()['wind']['speed'])
         print(f"Wind speed: {wind_speed} mph")
-    if 'gust' in data.json()['wind']:
+    elif 'gust' in data.json()['wind']:
         wind_gust = round(data.json()['wind']['gust'])
         print(f"Wind gust: {wind_gust} mph")
+    print()
