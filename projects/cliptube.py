@@ -60,7 +60,9 @@ while True:
     # Ask the user if they want to create another clip
     response = input("Do you want to create another clip? (y/n) ")
     if response.lower() == 'n':
-        # Remove the temporary file
-        os.remove(tmp_filename)
+        # Ask the user if they want to keep the temporary file
+        response = input("Do you want to keep the temporary file? (y/n) ")
+        if response.lower() == 'n':
+            # Remove the temporary file
+            os.remove(tmp_filename)
         break
-
