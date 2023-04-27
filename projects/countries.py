@@ -13,4 +13,12 @@ while response.status_code != 200 :
     url = base_url + str(country)
     response = requests.get(url)
 else:
-    print("country found")
+    print("Country found!")
+    data = response.json()
+    name = data[0]['name']['official']
+    landlocked = data[0]['landlocked']
+    flag = data[0]['flag']
+    population = data[0]['population']
+    formatted_population = '{:.2f}M'.format(population/1000000)
+    print(formatted_population)
+    
