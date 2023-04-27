@@ -16,8 +16,8 @@ else:
     print("Country found!")
     data = response.json()
     name = data[0]['name']['official']
-    continent = data[0]['continents']
-    landlocked = data[0]['landlocked']
+    continent = str(data[0]['continents'])
+    landlocked = str(data[0]['landlocked'])
     flag = data[0]['flag']
     flag_des = data[0]['flags']['alt']
     population = data[0]['population']
@@ -28,4 +28,15 @@ else:
     currency_name = currencies[currency_code]['name']
     currency_symbol = currencies[currency_code]['symbol']
     
-    
+    print()
+    print("Official name: " + name)
+    print(flag)
+    print("Description of Flag: ")
+    print(flag_des)
+    print()
+    print("Population: " + formatted_population)
+    print()
+    print("Currency: ")
+    print("     Name: " + currency_name)
+    print("     Code: " + currency_code)
+    print("     Symbol: " + currency_symbol)
