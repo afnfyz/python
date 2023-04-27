@@ -29,7 +29,7 @@ else:
     currency_symbol = currencies[currency_code]['symbol']
     
     print()
-    print("Official name: " + name)
+    print("Official Name: " + name)
     print(flag)
     print("Description of Flag: ")
     print(flag_des)
