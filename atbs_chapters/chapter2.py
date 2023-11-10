@@ -252,3 +252,25 @@ while True: # The main game loop.
     elif move == "s" and computerchoice == "p":
         print("You win!")
         wins = wins + 1
+
+########################################################################################
+
+name = 'Yusuf'
+password = 'Egypt'
+
+print('What is your username?')
+uname = input()
+
+while name != uname:
+    print('Wrong username. Try again')
+    uname = input()
+    
+else:
+    print('Input your password')
+    upassword = input()
+
+    while password != upassword:
+        print('Incorrect password. Try again.')
+        upassword = input()
+
+print('Login successful!')
