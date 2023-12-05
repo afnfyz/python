@@ -21,3 +21,18 @@ while True:
         break
 print('Thank you')
 '''
+
+'''
+# Continue & Break Example
+while True:
+    print('What is your name?')
+    name = input()
+    if name != 'Musa':
+        continue
+    print('Welcome Musa. What is in your hand?')
+    response = input()
+    if response != 'My staff':
+        continue
+    break
+print('Thank you Musa.')
+'''
