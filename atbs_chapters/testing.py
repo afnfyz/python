@@ -66,6 +66,7 @@ for i in range (1,15,3):
 for i in range (15,0,-1):
     print(i)
 
+import random
 for i in range(5):
     print(random.randint(1,10))
 
@@ -116,3 +117,21 @@ if guess == num:
 else:
     print('Nice try, my guess was ' + str(num))
 '''
+
+'''
+# Functions
+
+def hello():
+    print('Hello!')
+    print('Good day!')
+    print('Take care!')
+hello()
+hello()
+
+'''
+
+def hello(name):
+    print('Hello, ' + name)
+
+hello('Yusuf')
+hello('Yunus')  
