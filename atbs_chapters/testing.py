@@ -128,10 +128,26 @@ def hello():
 hello()
 hello()
 
-'''
 
 def hello(name):
     print('Hello, ' + name)
 
 hello('Yusuf')
-hello('Yunus')  
+hello('Yunus')
+
+'''
+
+import random
+
+def getnum(answernumber):
+    if answernumber == 1:
+        return 'Surah Fatiha'
+    elif answernumber == 2:
+        return 'Surah Baqarah'
+    elif answernumber == 3:
+        return 'Surah Aal-e-Imran'
+    elif answernumber == 4:
+        return 'Surah Nisa'
+r = random.randint(1, 4)
+surah = getnum(r)
+print(surah)
