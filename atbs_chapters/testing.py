@@ -65,5 +65,55 @@ for i in range (1,15,3):
 
 for i in range (15,0,-1):
     print(i)
+
+import random
+for i in range(5):
+    print(random.randint(1,10))
+
+from random import *
+for i in range(5):
+    print(randint(1,10))
 '''
-this is a test
+
+'''
+# Sys Exit Example
+import sys
+
+while True:
+    print('Type exit to exit')
+    r = input()
+    if r == 'exit':
+        sys.exit()
+    print('You typed ' + r + '.')
+'''
+'''
+import random
+
+guess = random.randint(1,5)
+
+print('I am thinking of a number between 1 and 5')
+user = 0
+
+while user != guess:
+    user = int(input('Take a guess:'))
+print('That is correct, my guess was' + ' ' + str(guess))
+'''
+'''
+# Guess The Number Program
+import random
+num = random.randint(1,15)
+print('I am thinking of a number between 1 and 15.')
+for i in range(1,6):
+    guess = int(input('Take a guess:'))
+    
+    if guess > num:
+        print('Your guess is too high')
+    elif guess < num:
+        print('Your guess is too low')
+    else:
+        break
+if guess == num:
+    print('Good Job! My guess was ' + str(num) + '\nYou guessed in ' + str(i) + ' guesses')
+else:
+    print('Nice try, my guess was ' + str(num))
+'''
