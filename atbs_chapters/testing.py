@@ -66,7 +66,6 @@ for i in range (1,15,3):
 for i in range (15,0,-1):
     print(i)
 
-import random
 for i in range(5):
     print(random.randint(1,10))
 
