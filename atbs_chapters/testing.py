@@ -137,6 +137,7 @@ hello('Yunus')
 
 '''
 
+'''
 import random
 
 def getnum(answernumber):
@@ -151,3 +152,22 @@ def getnum(answernumber):
 r = random.randint(1, 4)
 surah = getnum(r)
 print(surah)
+'''
+'''
+# end and sep functions
+print('Hello', end=' ')
+print('World')
+
+
+print('yellow', 'blue', 'purple', 'white', sep=', ')
+'''
+
+'''
+# Global Variable and Local Scope 
+def spam():
+    print(eggs)
+eggs = 42
+spam()
+print(eggs + 1)
+
+'''
