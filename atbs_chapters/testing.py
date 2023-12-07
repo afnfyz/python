@@ -230,9 +230,17 @@ except KeyboardInterrupt:
     sys.exit()
 '''
 
-number = int(input('Integer: '))
+try:
+    number = int(input('Enter an integer: '))
+except ValueError:
+    print("ERROR: You must enter an integer.")
+    exit()  # Exit the program if the input is not an integer
 
 def collatz(number):
+    if number == 0:
+        print("ERROR: Integer Must Be Greater Than 0")
+        return  # Exit the function if the input is 0
+    
     while number != 1:
         if number % 2 == 0:
             number = number // 2
