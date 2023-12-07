@@ -171,3 +171,29 @@ spam()
 print(eggs + 1)
 
 '''
+
+'''
+# Global Statement
+
+def bfast():
+    global eggs
+    eggs = 'bfast'
+
+eggs = 'global'
+bfast()
+print(eggs)
+
+'''
+
+
+# Error Handling
+
+def bfast(divideby):
+    try:
+        return 30 / divideby
+    except ZeroDivisionError:
+        print('Error: Invalid Argument.')
+print(bfast(10))
+print(bfast(5))
+print(bfast(0))
+print(bfast(3))
