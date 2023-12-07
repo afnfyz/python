@@ -230,6 +230,9 @@ except KeyboardInterrupt:
     sys.exit()
 '''
 
+
+'''
+# Chapter 3 Final Task
 try:
     number = int(input('Enter an integer: '))
 except ValueError:
@@ -250,3 +253,4 @@ def collatz(number):
 
 collatz(number)
 
+'''
