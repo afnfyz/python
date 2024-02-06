@@ -171,3 +171,86 @@ spam()
 print(eggs + 1)
 
 '''
+
+'''
+# Global Statement
+
+def bfast():
+    global eggs
+    eggs = 'bfast'
+
+eggs = 'global'
+bfast()
+print(eggs)
+
+'''
+
+'''
+# Error Handling
+
+def bfast(divideby):
+    try:
+        return 30 / divideby
+    except ZeroDivisionError:
+        print('Error: Invalid Argument.')
+print(bfast(10))
+print(bfast(5))
+print(bfast(0))
+print(bfast(3))
+'''
+
+'''
+# Zig Zag Animation
+
+import sys,time
+
+indent = 0 # How many spaces to indent.
+indentIncreasing = True # Whether the indentation is increasing or not.
+
+try:
+    while True: # The main program loop.
+        print(' ' * indent, end='')
+        print('********')
+        time.sleep(0.08) # Pause for 1/10 of a second.
+
+        if indentIncreasing:
+            # Increase the number of spaces:
+            indent = indent + 5
+            if indent >= 20:
+                # Change direction:
+                indentIncreasing = False
+
+        else:
+            # Decrease the number of spaces:
+            indent = indent - 3
+            if indent <= 0:
+                # Change direction:
+                indentIncreasing = True
+except KeyboardInterrupt:
+    sys.exit()
+'''
+
+
+'''
+# Chapter 3 Final Task
+try:
+    number = int(input('Enter an integer: '))
+except ValueError:
+    print("ERROR: You must enter an integer.")
+    exit()  # Exit the program if the input is not an integer
+
+def collatz(number):
+    if number == 0:
+        print("ERROR: Integer Must Be Greater Than 0")
+        return  # Exit the function if the input is 0
+    
+    while number != 1:
+        if number % 2 == 0:
+            number = number // 2
+        else:
+            number = 3 * number + 1
+        print(number)
+
+collatz(number)
+
+'''
