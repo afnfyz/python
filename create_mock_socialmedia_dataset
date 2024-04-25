@@ -1,0 +1,104 @@
+import pandas as pd
+import random
+from datetime import datetime, timedelta
+
+# Define date range
+start_date = datetime(2022, 1, 1)
+end_date = datetime(2026, 12, 31)
+date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+
+# Define metrics and categories
+metrics = ['CTR', 'Impressions', 'Reach', 'Comments', 'Video_Views', 'Followers', 
+           'Conversions', 'Engagement_Rate', 'Referral_Traffic', 'Clicks', 'Likes', 'Shares']
+
+platforms = ['Instagram', 'Twitter', 'Facebook', 'LinkedIn', 'YouTube', 'TikTok']
+countries = ['Australia', 'Canada', 'UK', 'US']
+genders = ['Male', 'Female', 'Other']
+age_groups = ['18-24', '25-34', '35-44', '45-54', '55-64', '65+']
+
+# Function to generate seasonal trends based on month
+def generate_seasonal_trend(month):
+    if month in [12, 1, 2]:  # Winter months (December, January, February)
+        return random.uniform(0.8, 1.0)  # Lower engagement
+    elif month in [3, 4, 5]:  # Spring months (March, April, May)
+        return random.uniform(0.9, 1.1)  # Moderate engagement
+    elif month in [6, 7, 8]:  # Summer months (June, July, August)
+        return random.uniform(1.0, 1.3)  # Higher engagement
+    else:  # Fall months (September, October, November)
+        return random.uniform(0.9, 1.2)  # Variable engagement
+
+# Generate mock data
+data = []
+for date in date_range:
+    month = date.month
+    
+    for _ in range(432):  # Generate exactly 432 rows per day
+        platform = random.choice(platforms)
+        country = random.choice(countries)
+        gender = random.choice(genders)
+        age_group = random.choice(age_groups)
+        
+        row = {
+            'Date': date,
+            'Platform': platform,
+            'Country': country,
+            'Gender': gender,
+            'Age_Group': age_group
+        }
+        
+        # Generate metrics with seasonal trends and demographic preferences
+        for metric in metrics:
+            if metric == 'CTR' or metric == 'Engagement_Rate':
+                # Apply seasonal trend to CTR and Engagement_Rate
+                seasonal_factor = generate_seasonal_trend(month)
+                row[metric] = round(random.uniform(0.01, 0.20) * seasonal_factor, 3)  # Vary CTR and Engagement_Rate
+            elif metric == 'Video_Views':
+                # Increase video views for younger age groups
+                if age_group in ['18-24', '25-34']:
+                    row[metric] = random.randint(2000, 10000)  # Higher views for younger demographics
+                else:
+                    row[metric] = random.randint(500, 2000)
+            elif metric == 'Likes':
+                # Adjust likes based on age group and gender
+                if gender == 'Other':
+                    row[metric] = random.randint(20, 100)  # Lower likes for 'Other' gender
+                elif age_group in ['18-24', '25-34']:
+                    row[metric] = random.randint(200, 800)  # Higher likes for younger demographics
+                else:
+                    row[metric] = random.randint(50, 300)
+            elif metric == 'Comments':
+                # Adjust comments based on age group and gender
+                if gender == 'Other':
+                    row[metric] = random.randint(5, 20)  # Lower comments for 'Other' gender
+                elif age_group in ['18-24', '25-34']:
+                    row[metric] = random.randint(50, 200)  # Higher comments for younger demographics
+                else:
+                    row[metric] = random.randint(10, 50)
+            elif metric == 'Clicks':
+                # Adjust clicks based on age group and gender
+                if gender == 'Other':
+                    row[metric] = random.randint(10, 50)  # Lower clicks for 'Other' gender
+                elif age_group in ['18-24', '25-34']:
+                    row[metric] = random.randint(100, 500)  # Higher clicks for younger demographics
+                else:
+                    row[metric] = random.randint(50, 200)
+            else:
+                # Generate random integer values for other metrics
+                row[metric] = random.randint(100, 10000)
+        
+        data.append(row)
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Rename columns to replace underscores with spaces
+df.columns = df.columns.str.replace('_', ' ')
+
+# Specify the file path to save the CSV file
+df.to_csv('mock_social_media_dataset.csv', index=False)
+
+
+# Display sample of the generated dataset
+print(df.head())
+
+
