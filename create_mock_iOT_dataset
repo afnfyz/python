@@ -1,0 +1,234 @@
+import pandas as pd
+import numpy as np
+import random
+from faker import Faker
+
+# Initialize Faker to generate realistic data
+fake = Faker()
+
+# Define parameters for generating mock data
+device_ids = ['Device001', 'Device002', 'Device003', 'Device004', 'Device005']
+
+# Real-world locations with corresponding latitude, longitude, and seasonal temperature/humidity patterns
+locations = {
+    'New York City': {
+        'latitude': 40.7128,
+        'longitude': -74.0060,
+        'seasonal_temperature': {
+            'winter': (0, 10),   # Winter temperature range (in Celsius)
+            'spring': (10, 20),  # Spring temperature range (in Celsius)
+            'summer': (20, 30),  # Summer temperature range (in Celsius)
+            'fall': (10, 20)     # Fall temperature range (in Celsius)
+        },
+        'seasonal_humidity': {
+            'winter': (40, 60),  # Winter humidity range (in percentage)
+            'spring': (50, 70),  # Spring humidity range (in percentage)
+            'summer': (60, 80),  # Summer humidity range (in percentage)
+            'fall': (50, 70)     # Fall humidity range (in percentage)
+        }
+    },
+    'Los Angeles': {
+        'latitude': 34.0522,
+        'longitude': -118.2437,
+        'seasonal_temperature': {
+            'winter': (10, 20),
+            'spring': (15, 25),
+            'summer': (20, 35),
+            'fall': (15, 25)
+        },
+        'seasonal_humidity': {
+            'winter': (50, 70),
+            'spring': (50, 80),
+            'summer': (60, 80),
+            'fall': (50, 70)
+        }
+    },
+    'Chicago': {
+        'latitude': 41.8781,
+        'longitude': -87.6298,
+        'seasonal_temperature': {
+            'winter': (-5, 5),
+            'spring': (5, 15),
+            'summer': (20, 30),
+            'fall': (5, 15)
+        },
+        'seasonal_humidity': {
+            'winter': (40, 60),
+            'spring': (50, 70),
+            'summer': (60, 80),
+            'fall': (50, 70)
+        }
+    },
+    'Houston': {
+        'latitude': 29.7604,
+        'longitude': -95.3698,
+        'seasonal_temperature': {
+            'winter': (10, 20),
+            'spring': (20, 30),
+            'summer': (25, 35),
+            'fall': (15, 25)
+        },
+        'seasonal_humidity': {
+            'winter': (60, 80),
+            'spring': (50, 70),
+            'summer': (60, 85),
+            'fall': (50, 70)
+        }
+    },
+    'London': {
+        'latitude': 51.5074,
+        'longitude': -0.1278,
+        'seasonal_temperature': {
+            'winter': (2, 8),
+            'spring': (8, 15),
+            'summer': (15, 25),
+            'fall': (8, 15)
+        },
+        'seasonal_humidity': {
+            'winter': (70, 90),
+            'spring': (60, 80),
+            'summer': (60, 80),
+            'fall': (70, 90)
+        }
+    },
+    'Tokyo': {
+        'latitude': 35.6895,
+        'longitude': 139.6917,
+        'seasonal_temperature': {
+            'winter': (5, 12),
+            'spring': (12, 20),
+            'summer': (25, 32),
+            'fall': (15, 22)
+        },
+        'seasonal_humidity': {
+            'winter': (40, 60),
+            'spring': (50, 70),
+            'summer': (70, 90),
+            'fall': (50, 70)
+        }
+    },
+    'Sydney': {
+        'latitude': -33.8688,
+        'longitude': 151.2093,
+        'seasonal_temperature': {
+            'winter': (10, 20),
+            'spring': (20, 25),
+            'summer': (25, 35),
+            'fall': (15, 25)
+        },
+        'seasonal_humidity': {
+            'winter': (50, 70),
+            'spring': (60, 80),
+            'summer': (50, 70),
+            'fall': (60, 80)
+        }
+    },
+    'Singapore': {
+        'latitude': 1.3521,
+        'longitude': 103.8198,
+        'seasonal_temperature': {
+            'winter': (25, 30),
+            'spring': (25, 32),
+            'summer': (28, 34),
+            'fall': (26, 32)
+        },
+        'seasonal_humidity': {
+            'winter': (70, 90),
+            'spring': (70, 90),
+            'summer': (70, 90),
+            'fall': (70, 90)
+        }
+    },
+    'Dubai': {
+        'latitude': 25.276987,
+        'longitude': 55.296249,
+        'seasonal_temperature': {
+            'winter': (15, 25),
+            'spring': (20, 30),
+            'summer': (30, 45),
+            'fall': (20, 30)
+        },
+        'seasonal_humidity': {
+            'winter': (30, 50),
+            'spring': (30, 50),
+            'summer': (30, 50),
+            'fall': (30, 50)
+        }
+    }
+}
+
+# Function to generate data for a specific location and timestamp
+def generate_location_data(location, timestamp):
+    device_id = random.choice(device_ids)
+    latitude = locations[location]['latitude']
+    longitude = locations[location]['longitude']
+    
+    # Extract month from timestamp to determine season
+    month = timestamp.month
+    
+    # Determine seasonal temperature range based on month
+    if 1 <= month <= 2 or month == 12:  # Winter (December to February)
+        temp_min_c, temp_max_c = locations[location]['seasonal_temperature']['winter']
+    elif 3 <= month <= 5:  # Spring (March to May)
+        temp_min_c, temp_max_c = locations[location]['seasonal_temperature']['spring']
+    elif 6 <= month <= 8:  # Summer (June to August)
+        temp_min_c, temp_max_c = locations[location]['seasonal_temperature']['summer']
+    else:  # Fall (September to November)
+        temp_min_c, temp_max_c = locations[location]['seasonal_temperature']['fall']
+    
+    # Generate temperature within seasonal range for the location (in Celsius)
+    temperature_c = random.uniform(temp_min_c, temp_max_c)
+    
+    # Convert temperature from Celsius to Fahrenheit
+    temperature_f = temperature_c * 9/5 + 32
+    
+    # Determine seasonal humidity range based on month
+    if 1 <= month <= 2 or month == 12:  # Winter (December to February)
+        humidity_min, humidity_max = locations[location]['seasonal_humidity']['winter']
+    elif 3 <= month <= 5:  # Spring (March to May)
+        humidity_min, humidity_max = locations[location]['seasonal_humidity']['spring']
+    elif 6 <= month <= 8:  # Summer (June to August)
+        humidity_min, humidity_max = locations[location]['seasonal_humidity']['summer']
+    else:  # Fall (September to November)
+        humidity_min, humidity_max = locations[location]['seasonal_humidity']['fall']
+    
+    # Generate humidity within seasonal range for the location
+    humidity = random.uniform(humidity_min, humidity_max)
+    
+    return {
+        'Device ID': device_id,
+        'Location': location,
+        'Latitude': latitude,
+        'Longitude': longitude,
+        'Temperature (°F)': temperature_f,
+        'Humidity (%)': humidity,
+        'Timestamp': timestamp
+    }
+
+# Generate data for each day from 2022-01-01 to 2026-12-31 with random times
+start_date = pd.to_datetime('2022-01-01')
+end_date = pd.to_datetime('2026-12-31')
+date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+
+# List to store generated data
+data = []
+
+# Iterate over each location and each day in the date range
+for location in locations:
+    for date in date_range:
+        # Generate random time within the day (hour, minute, second)
+        hour = random.randint(0, 23)
+        minute = random.randint(0, 59)
+        second = random.randint(0, 59)
+        timestamp = date + pd.DateOffset(hours=hour, minutes=minute, seconds=second)
+        
+        data.append(generate_location_data(location, timestamp))
+
+# Create DataFrame from the generated data
+df = pd.DataFrame(data)
+
+# Display the generated DataFrame
+print(df.head())
+
+# Optionally, save the DataFrame to a CSV file
+df.to_csv('iot_sensor_data.csv', index=False)

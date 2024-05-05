@@ -1,0 +1,90 @@
+import pandas as pd
+import numpy as np
+import random
+from faker import Faker
+
+# Initialize Faker to generate realistic data
+fake = Faker()
+
+# Define parameters for generating mock data
+num_hospitals = 10
+treatment_codes = ['Medication', 'Surgery', 'Therapy', 'Monitoring']
+insurance_types = ['Private', 'Medicare', 'Medicaid', 'Uninsured']
+physician_ids = ['Dr001', 'Dr002', 'Dr003', 'Dr004', 'Dr005']
+
+# Define outcome probabilities based on severity of illness
+outcome_probabilities = {
+    'Mild': {'Recovered': 0.5, 'Improved': 0.4, 'Stable': 0.1},
+    'Moderate': {'Recovered': 0.4, 'Improved': 0.4, 'Stable': 0.2},
+    'Severe': {'Recovered': 0.2, 'Improved': 0.3, 'Stable': 0.4, 'Deceased': 0.1}
+}
+
+# Generate mock healthcare data
+data = []
+
+# Generate date range from 01/01/2022 to 12/31/2026
+date_range = pd.date_range(start='2022-01-01', end='2026-12-31', freq='D')
+admission_id_counter = 1  # Initialize admission ID counter
+
+for date in date_range:
+    # Determine number of admissions for the day (at least one admission per day)
+    num_admissions = random.randint(1, 11)  # Adjust as needed
+    
+    for _ in range(num_admissions):
+        admission_id = admission_id_counter
+        admission_id_counter += 1
+        
+        admission_date = date
+        age = random.randint(18, 90)
+        gender = fake.random_element(['Male', 'Female'])
+        diagnosis = fake.random_element([
+            'Pneumonia', 'Diabetes', 'Hypertension', 'Stroke', 'Cancer', 'Heart Disease'
+        ])
+
+        # Generate realistic length of stay based on diagnosis
+        if diagnosis in ['Pneumonia', 'Stroke']:
+            length_of_stay = random.randint(3, 10)
+        elif diagnosis in ['Diabetes', 'Hypertension', 'Heart Disease']:
+            length_of_stay = random.randint(2, 7)
+        else:
+            length_of_stay = random.randint(1, 5)
+
+        severity_of_illness = fake.random_element(['Mild', 'Moderate', 'Severe'])
+        treatment_code = random.choice(treatment_codes)
+        
+        # Select outcome based on severity of illness and probabilities
+        outcome_prob = outcome_probabilities[severity_of_illness]
+        outcome = np.random.choice(list(outcome_prob.keys()), p=list(outcome_prob.values()))
+
+        # Simulate readmission with low probability
+        readmission = np.random.choice([True, False], p=[0.1, 0.9])
+
+        insurance_type = fake.random_element(insurance_types)
+        physician_id = random.choice(physician_ids)
+
+        discharge_date = admission_date + pd.DateOffset(days=length_of_stay)
+
+        data.append({
+            'Admission ID': admission_id,
+            'Admission Date': admission_date,
+            'Discharge Date': discharge_date,
+            'Age': age,
+            'Gender': gender,
+            'Diagnosis': diagnosis,
+            'Length of Stay (days)': length_of_stay,
+            'Severity of Illness': severity_of_illness,
+            'Treatment Code': treatment_code,
+            'Outcome': outcome,
+            'Readmission': readmission,
+            'Insurance Type': insurance_type,
+            'Physician ID': physician_id
+        })
+
+# Create DataFrame from the generated data
+df_healthcare = pd.DataFrame(data)
+
+# Display the generated DataFrame
+print(df_healthcare.head())
+
+# Optionally, save the DataFrame to a CSV file
+df_healthcare.to_csv('healthcare_metrics_data.csv', index=False)
