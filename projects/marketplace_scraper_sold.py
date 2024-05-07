@@ -29,7 +29,7 @@ transmission = "automatic"
 make = "Honda"
 model = ""
 # Set up full url
-url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&maxMileage={max_mileage}&maxYear={max_year}&minMileage={min_mileage}&minYear={min_year}&transmissionType={transmission}&query={make}{model}&exact=false"
+url = f"{base_url}availability=out%20of%20stock&query={make}%20{model}&exact=false"
 
 # Visit the website
 driver.get(url)
@@ -111,7 +111,7 @@ df = pd.DataFrame(data)
 df_filtered = df[df['Name'] != 'N/A']
 
 # Output DataFrame to CSV
-csv_filename = f'{make}{model}_marketplace_listings.csv'
+csv_filename = f'{make}{model}_sold_marketplace_listings.csv'
 df_filtered.to_csv(csv_filename, index=False)
 
 # Quit the webdriver
