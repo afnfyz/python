@@ -1,25 +1,28 @@
+import pandas as pd
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup as soup
-import pandas as pd
 import time
-import re
 
 # Set up Splinter
 options = webdriver.ChromeOptions()
 options.add_experimental_option("detach", True)
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 # Set up base url
 base_url = "https://www.facebook.com/marketplace/nyc/search?"
 # Set up search parameters
 min_price = 1000
-max_price = 30000
-days_listed = 7
+max_price = 5000
+days_listed = 20
 min_mileage = 50000
-max_mileage = 200000
+max_mileage = 150000
 min_year = 2000
 max_year = 2020
 transmission = "automatic"
@@ -38,93 +41,77 @@ except:
     pass
 
 # Scroll down to load more results
-scroll_count = 10
+scroll_count = 4
 scroll_delay = 2
 
 for _ in range(scroll_count):
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(scroll_delay)
 
-# Parse the HTML
-html = driver.page_source
-market_soup = soup(html, 'html.parser')
+# Parse the HTML using BeautifulSoup from the updated page source
+market_soup = soup(driver.page_source, 'html.parser')
 
-# Extract necessary information
-# Extract all the necessary info and insert into lists
-titles_div = market_soup.find_all('span', class_="x1lliihq x6ikm8r x10wlt62 x1n2onr6")
-titles_list = [title.text.strip() for title in titles_div]
-prices_div = market_soup.find_all('span', class_="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x676frb x1lkfr7t x1lbecb7 x1s688f xzsf02u")
-prices_list = [price.text.strip() for price in prices_div]
-mileage_div = market_soup.find_all('span', class_="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x3x7a5m x1nxh6w3 x1sibtaa xo1l8bm xi81zsa")
-mileage_list = [mileage.text.strip() for mileage in mileage_div]
-urls_div = market_soup.find_all('a', class_="x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g x1lku1pv")
-urls_list = [url.get('href') for url in urls_div]
+# Initialize lists to store data
+names = []
+prices = []
+locations = []
+mileages = []
+urls = []
 
-# Create a regular expression pattern to match city and state entries like "City, State"
-pattern = re.compile(r'(\w+(?:-\w+)?, [A-Z]{2})')
+# Extract information from each listing
+listings = market_soup.find_all('div', class_='x9f619 x78zum5 x1r8uery xdt5ytf x1iyjqo2 xs83m0k x1e558r4 x150jy0e x1iorvi4 xjkvuk6 xnpuxes x291uyu x1uepa24')  # Assuming this class contains each listing
 
-# Initialize an empty list to store adjusted mileage entries
-mileage_list2 = []
+for listing in listings:
+    # Extract price
+    price_element = listing.find('span', class_='x193iq5w xeuugli x13faqbe x1vvkbs x10flsy6 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x1tu3fi x3x7a5m x1lkfr7t x1lbecb7 x1s688f xzsf02u')
+    price = price_element.text.strip() if price_element else "N/A"
+    prices.append(price)
 
-# Iterate through the original mileage entries
-for item in mileage_list:
-    # Append the current mileage entry to the adjusted list
-    mileage_list2.append(item)
-    
-    # Check if the current mileage entry matches the pattern and there are at least two entries in the adjusted list
-    if pattern.match(item) and len(mileage_list2) >= 2 and pattern.match(mileage_list2[-2]):
-        # If the conditions are met, insert "0K km" in between the two consecutive city and state entries
-        mileage_list2.insert(-1, '0K km')
+    # Extract name
+    name_element = listing.find('span', class_='x1lliihq x6ikm8r x10wlt62 x1n2onr6')
+    name = name_element.text.strip() if name_element else "N/A"
+    names.append(name)
 
-mileage_list2
+    # Extract info elements
+    info_elements = listing.find_all('span', class_='x1lliihq x6ikm8r x10wlt62 x1n2onr6 xlyipyv xuxw1ft')
 
-# Extracted mileage list (separate from location and extract numeric values only)
-# Define regular expressions to extract numeric mileage values in "K km" and "K miles" format
-mileage_pattern_km = r'(\d+)K km'
-mileage_pattern_miles = r'(\d+)K miles'
+    # Initialize variables for location and mileage
+    location = "N/A"
+    mileage = "N/A"
 
-# Initialize an empty list to store cleaned mileage values
-mileage_clean = []
+    # Process each info element
+    for info_element in info_elements:
+        text = info_element.get_text(strip=True)
+        if re.match(r'^[a-zA-Z,\s]+$', text):  # Match location (letters and commas)
+            location = text
+        elif re.match(r'^\d+\s?[Kk]?\s?miles?$', text):  # Match mileage (numbers followed by optional 'K' and 'miles')
+            mileage = text
 
-# Iterate through the adjusted mileage entries
-for item in mileage_list2:
-    # Try to find a match for the "K km" format
-    match_mileage_km = re.search(mileage_pattern_km, item)
-    
-    # Try to find a match for the "K miles" format
-    match_mileage_miles = re.search(mileage_pattern_miles, item)
-    
-    # Check if either of the formats is found
-    if match_mileage_km or match_mileage_miles:
-        # If "K km" format is found, convert it to meters and append to the cleaned list
-        if match_mileage_km:
-            mileage_clean.append(int(match_mileage_km.group(1)) * 1000)
-        # If "K miles" format is found, convert it to meters and append to the cleaned list
-        else:
-            mileage_clean.append(int(match_mileage_miles.group(1)) * 1600)
+    # Append location and mileage to lists
+    locations.append(location)
+    mileages.append(mileage)
 
-vehicles_list = []
+    # Extract URL
+    url_element = listing.find('a', class_="x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 xggy1nq x1a2a7pz x1heor9g xt0b8zv x1hl2dhg x1lku1pv")
+    url = url_element['href'] if url_element else "N/A"
+    urls.append('https://www.facebook.com/' + url)
 
-for i, item in enumerate(titles_list):
-    cars_dict = {}
-    
-    title_split = titles_list[i].split()
-    
-    cars_dict["Year"] = (title_split[0])
-    cars_dict["Make"] = title_split[1]
-    cars_dict["Model"] = title_split[2]
-    cars_dict["Price"] = int(re.sub(r'[^\d.]', '', prices_list[i]))
-    cars_dict["Mileage"] = mileage_clean[i]
-    cars_dict["URL"] = urls_list[i]
-    vehicles_list.append(cars_dict)
-    
-print(vehicles_list)
+# Create DataFrame from the lists
+data = {
+    'Name': names,
+    'Price': prices,
+    'Location': locations,
+    'Mileage': mileages,
+    'URL': urls
+}
+df = pd.DataFrame(data)
 
-# Print or further process the extracted data
-print("Number of titles extracted:", len(titles_list))
-print("Number of prices extracted:", len(prices_list))
-print("Number of mileage extracted:", len(mileage_clean))
-print("Number of URLs extracted:", len(urls_list))
+# Filter out rows where Name is "N/A"
+df_filtered = df[df['Name'] != 'N/A']
 
-# End the automated browsing session
+# Output DataFrame to CSV
+csv_filename = 'marketplace_listings.csv'
+df_filtered.to_csv(csv_filename, index=False)
+
+# Quit the webdriver
 driver.quit()
