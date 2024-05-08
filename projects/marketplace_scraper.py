@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+import requests 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,7 +21,7 @@ base_url = "https://www.facebook.com/marketplace/nyc/search?"
 # Set up search parameters
 min_price = 1000
 max_price = 5000
-days_listed = 7
+days_listed = 1
 min_mileage = 50000
 max_mileage = 150000
 min_year = 1998
@@ -111,7 +112,7 @@ df = pd.DataFrame(data)
 df_filtered = df[df['Name'] != 'N/A']
 
 # Output DataFrame to CSV
-csv_filename = f'{make}{model}_marketplace_listings.csv'
+csv_filename = f'marketplace_listings.csv'
 df_filtered.to_csv(csv_filename, index=False)
 
 # Quit the webdriver
