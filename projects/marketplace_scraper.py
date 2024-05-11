@@ -1,6 +1,5 @@
 import pandas as pd
 import re
-import requests 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,12 +19,12 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 base_url = "https://www.facebook.com/marketplace/nyc/search?"
 # Set up search parameters
 min_price = 1000
-max_price = 5000
-days_listed = 1
+max_price = 7000
+days_listed = 60
 min_mileage = 50000
-max_mileage = 150000
+max_mileage = 180000
 min_year = 1998
-max_year = 2020
+max_year = 2024
 transmission = "automatic"
 make = "Honda"
 model = ""
@@ -42,7 +41,7 @@ except:
     pass
 
 # Scroll down to load more results
-scroll_count = 10
+scroll_count = 20
 scroll_delay = 2
 
 for _ in range(scroll_count):
@@ -65,7 +64,7 @@ listings = market_soup.find_all('div', class_='x9f619 x78zum5 x1r8uery xdt5ytf x
 
 for listing in listings:
     # Extract price
-    price_element = listing.find('span', class_='x193iq5w xeuugli x13faqbe x1vvkbs x10flsy6 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x1tu3fi x3x7a5m x1lkfr7t x1lbecb7 x1s688f xzsf02u')
+    price_element = listing.find('span', class_='x193iq5w xeuugli x13faqbe x1vvkbs xlh3980 xvmahel x1n0sxbx x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x3x7a5m x1lkfr7t x1lbecb7 x1s688f xzsf02u')
     price = price_element.text.strip() if price_element else "N/A"
     prices.append(price)
 
@@ -112,7 +111,7 @@ df = pd.DataFrame(data)
 df_filtered = df[df['Name'] != 'N/A']
 
 # Output DataFrame to CSV
-csv_filename = f'marketplace_listings.csv'
+csv_filename = f'{make}{model}_marketplace_listings.csv'
 df_filtered.to_csv(csv_filename, index=False)
 
 # Quit the webdriver
