@@ -16,18 +16,18 @@ options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 # Set up base url
-base_url = "https://www.facebook.com/marketplace/nyc/search?"
+base_url = "https://www.facebook.com/marketplace/108528445838668/search?"
 # Set up search parameters
-min_price = 1000
-max_price = 7000
+min_price = 3000
+max_price = 20000
 days_listed = 60
-min_mileage = 50000
+min_mileage = 25000
 max_mileage = 180000
-min_year = 1998
-max_year = 2024
-transmission = "automatic"
-make = "Honda"
-model = ""
+min_year = 2009
+max_year = 2020
+transmission = ""
+make = "Volkswagen "
+model = "GTI"
 # Set up full url
 url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&maxMileage={max_mileage}&maxYear={max_year}&minMileage={min_mileage}&minYear={min_year}&transmissionType={transmission}&query={make}{model}&exact=false"
 
@@ -41,7 +41,7 @@ except:
     pass
 
 # Scroll down to load more results
-scroll_count = 20
+scroll_count = 5
 scroll_delay = 2
 
 for _ in range(scroll_count):
