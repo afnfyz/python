@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import os
 
 # Path to your JSON file
 json_file_path = "/Users/afnanfoyez/Documents/Data/turo_car_listings.json"
@@ -36,8 +37,13 @@ for vehicle in vehicles:
 # Create a DataFrame
 df = pd.DataFrame(data)
 
-# Save to CSV with a custom path
+# Save to CSV with a custom path, appending if the file exists
 csv_file_path = "/Users/afnanfoyez/Documents/Data/vehicles_data.csv"
-df.to_csv(csv_file_path, index=False)
+
+# Check if file exists to decide the header parameter
+if not os.path.isfile(csv_file_path):
+    df.to_csv(csv_file_path, index=False, mode='w', header=True)
+else:
+    df.to_csv(csv_file_path, index=False, mode='a', header=False)
 
 print(f"CSV file created successfully at {csv_file_path}.")
